@@ -13,9 +13,29 @@ import Loading from "./shared/Loading";
 
 // Importing Layouts
 import AuthLayout from "./core/layouts/AuthLayout";
+import AdminLayout from "./core/layouts/AdminLayout";
+import DeanLayout from "./core/layouts/DeanLayout";
 
-// Importing Auth Pages
+// Auth Pages
 const AuthSignin = lazy(() => import("./features/auth/pages/Signin"));
+const AuthAdmin = lazy(() => import("./features/auth/pages/Admin"));
+const AuthDean = lazy(() => import("./features/auth/pages/Dean"));
+
+// Admin Pages
+const AdminIndex = lazy(() => import("./dashboards/admin/pages/Admin"));
+const AdminSettings = lazy(() => import("./dashboards/admin/pages/Settings"));
+const AdminProfile = lazy(() => import("./dashboards/admin/pages/Profile"));
+const AdminNotifications = lazy(
+  () => import("./dashboards/admin/pages/Notifications")
+);
+
+// Dean Pages
+const DeanIndex = lazy(() => import("./dashboards/dean/pages/Dean"));
+const DeanSettings = lazy(() => import("./dashboards/dean/pages/Settings"));
+const DeanProfile = lazy(() => import("./dashboards/dean/pages/Profile"));
+const DeanNotifications = lazy(
+  () => import("./dashboards/dean/pages/Notifications")
+);
 
 function App() {
   const toastRef = createRef<any>();
@@ -57,6 +77,80 @@ function App() {
           }
         >
           <Route index element={<AuthSignin />} />
+          <Route path="auth/admin" element={<AuthAdmin />} />
+          <Route path="auth/dean" element={<AuthDean />} />
+        </Route>
+
+        {/* Admin Routes */}
+        <Route
+          path="/admin"
+          element={
+            <Suspense fallback={<Loading />}>
+              <SnackbarProvider
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                ref={toastRef}
+                TransitionComponent={Grow}
+                preventDuplicate
+                autoHideDuration={5000}
+                action={(key: any) => (
+                  <IconButton
+                    size="small"
+                    aria-label="close"
+                    color="inherit"
+                    onClick={closeToast(key)}
+                  >
+                    <CloseIcon fontSize="small" />
+                  </IconButton>
+                )}
+              >
+                <AdminLayout />
+              </SnackbarProvider>
+            </Suspense>
+          }
+        >
+          <Route index element={<AdminIndex />} />
+          <Route path="profile" element={<AdminProfile />} />
+          <Route path="settings" element={<AdminSettings />} />
+          <Route path="notifications" element={<AdminNotifications />} />
+        </Route>
+
+        {/* Dean Routes */}
+        <Route
+          path="/dean"
+          element={
+            <Suspense fallback={<Loading />}>
+              <SnackbarProvider
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                ref={toastRef}
+                TransitionComponent={Grow}
+                preventDuplicate
+                autoHideDuration={5000}
+                action={(key: any) => (
+                  <IconButton
+                    size="small"
+                    aria-label="close"
+                    color="inherit"
+                    onClick={closeToast(key)}
+                  >
+                    <CloseIcon fontSize="small" />
+                  </IconButton>
+                )}
+              >
+                <DeanLayout />
+              </SnackbarProvider>
+            </Suspense>
+          }
+        >
+          <Route index element={<DeanIndex />} />
+          <Route path="profile" element={<DeanProfile />} />
+          <Route path="settings" element={<DeanSettings />} />
+          <Route path="notifications" element={<DeanNotifications />} />
         </Route>
       </Routes>
     </div>
