@@ -9,4 +9,10 @@ const UsersEndpoints = {
   GetDeans: "/User/GetUsersInRole/Dean",
 };
 
-export { AuthEndpoints, UsersEndpoints };
+const FacultyEndpoints = {
+  GetAll: "/Faculty/GetAll",
+  GetById: "/Faculty/GetById/",
+  Create: "/Faculty/Create/",
+};
+
+export { AuthEndpoints, UsersEndpoints, FacultyEndpoints };
