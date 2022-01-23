@@ -6,6 +6,7 @@ import "../../assets/scss/blocks/Sidebar.scss";
 // Material Icons - Mudasir Nizamani
 import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import ApiOutlinedIcon from "@mui/icons-material/ApiOutlined";
 import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
 
 function Sidebar() {
@@ -62,11 +63,21 @@ function Sidebar() {
           <Link
             to="/admin/faculties"
             className={`sidebar5__item ${
-              location.pathname == "/admin/faculties" ? "active" : ""
+              location.pathname.includes("faculties") ? "active" : ""
             }`}
           >
             <AccountTreeOutlinedIcon className="icon" />
             <div className="sidebar__item__text">Faculties</div>
+          </Link>
+
+          <Link
+            to="/admin/departments"
+            className={`sidebar5__item ${
+              location.pathname.includes("departments") ? "active" : ""
+            }`}
+          >
+            <ApiOutlinedIcon className="icon" />
+            <div className="sidebar__item__text">Departments</div>
           </Link>
 
           <div className="sidebar2__category" style={{ marginTop: "2rem" }}>
@@ -75,7 +86,7 @@ function Sidebar() {
           <Link
             to="/admin/profile"
             className={`sidebar5__item ${
-              location.pathname == "/admin/profile" ? "active" : ""
+              location.pathname.includes("profile") ? "active" : ""
             }`}
           >
             <AccountCircleOutlinedIcon className="icon" />
@@ -84,7 +95,7 @@ function Sidebar() {
           <Link
             to="/admin/notifications"
             className={`sidebar5__item ${
-              location.pathname == "/admin/notifications" ? "active" : ""
+              location.pathname.includes("notifications") ? "active" : ""
             }`}
           >
             <NotificationsActiveOutlinedIcon className="icon" />
@@ -93,7 +104,7 @@ function Sidebar() {
           <Link
             to="/admin/settings"
             className={`sidebar5__item ${
-              location.pathname == "/admin/settings" ? "active" : ""
+              location.pathname.includes("settings") ? "active" : ""
             }`}
           >
             <svg className="icon icon-settings">

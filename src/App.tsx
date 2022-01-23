@@ -20,6 +20,7 @@ import DeanLayout from "./core/layouts/DeanLayout";
 const AuthSignin = lazy(() => import("./features/auth/pages/Signin"));
 const AuthAdmin = lazy(() => import("./features/auth/pages/Admin"));
 const AuthDean = lazy(() => import("./features/auth/pages/Dean"));
+const AuthHod = lazy(() => import("./features/auth/pages/Hod"));
 
 // Admin Pages
 const AdminIndex = lazy(() => import("./dashboards/admin/pages/Admin"));
@@ -36,6 +37,15 @@ const AdminFaculty = lazy(
 );
 const AdminCreateFaculty = lazy(
   () => import("./dashboards/admin/pages/faculty/CreateFaculty")
+);
+const AdminDepartments = lazy(
+  () => import("./dashboards/admin/pages/department/Departments")
+);
+const AdminDepartment = lazy(
+  () => import("./dashboards/admin/pages/department/Department")
+);
+const AdminCreateDepartment = lazy(
+  () => import("./dashboards/admin/pages/department/CreateDepartment")
 );
 
 // Dean Pages
@@ -88,6 +98,7 @@ function App() {
           <Route index element={<AuthSignin />} />
           <Route path="auth/admin" element={<AuthAdmin />} />
           <Route path="auth/dean" element={<AuthDean />} />
+          <Route path="auth/hod" element={<AuthHod />} />
         </Route>
 
         {/* Admin Routes */}
@@ -129,6 +140,17 @@ function App() {
           <Route path="faculties" element={<AdminFaculties />} />
           <Route path="faculties/:faculty_id" element={<AdminFaculty />} />
           <Route path="faculties/create" element={<AdminCreateFaculty />} />
+
+          {/* Department */}
+          <Route path="departments" element={<AdminDepartments />} />
+          <Route
+            path="departments/:department_id"
+            element={<AdminDepartment />}
+          />
+          <Route
+            path="departments/create"
+            element={<AdminCreateDepartment />}
+          />
         </Route>
 
         {/* Dean Routes */}
