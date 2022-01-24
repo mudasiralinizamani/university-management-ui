@@ -8,6 +8,7 @@ import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ApiOutlinedIcon from "@mui/icons-material/ApiOutlined";
 import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
+import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined";
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -78,6 +79,16 @@ function Sidebar() {
           >
             <ApiOutlinedIcon className="icon" />
             <div className="sidebar__item__text">Departments</div>
+          </Link>
+
+          <Link
+            to="/admin/subjects"
+            className={`sidebar5__item ${
+              location.pathname.includes("subjects") ? "active" : ""
+            }`}
+          >
+            <AppsOutlinedIcon className="icon" />
+            <div className="sidebar__item__text">Subjects</div>
           </Link>
 
           <div className="sidebar2__category" style={{ marginTop: "2rem" }}>

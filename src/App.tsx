@@ -21,6 +21,7 @@ const AuthSignin = lazy(() => import("./features/auth/pages/Signin"));
 const AuthAdmin = lazy(() => import("./features/auth/pages/Admin"));
 const AuthDean = lazy(() => import("./features/auth/pages/Dean"));
 const AuthHod = lazy(() => import("./features/auth/pages/Hod"));
+const AuthTeacher = lazy(() => import("./features/auth/pages/Teacher"));
 
 // Admin Pages
 const AdminIndex = lazy(() => import("./dashboards/admin/pages/Admin"));
@@ -46,6 +47,15 @@ const AdminDepartment = lazy(
 );
 const AdminCreateDepartment = lazy(
   () => import("./dashboards/admin/pages/department/CreateDepartment")
+);
+const AdminCreateSubject = lazy(
+  () => import("./dashboards/admin/pages/subject/CreateSubject")
+);
+const AdminSubject = lazy(
+  () => import("./dashboards/admin/pages/subject/Subject")
+);
+const AdminSubjects = lazy(
+  () => import("./dashboards/admin/pages/subject/Subjects")
 );
 
 // Dean Pages
@@ -99,6 +109,7 @@ function App() {
           <Route path="auth/admin" element={<AuthAdmin />} />
           <Route path="auth/dean" element={<AuthDean />} />
           <Route path="auth/hod" element={<AuthHod />} />
+          <Route path="auth/teacher" element={<AuthTeacher />} />
         </Route>
 
         {/* Admin Routes */}
@@ -151,6 +162,11 @@ function App() {
             path="departments/create"
             element={<AdminCreateDepartment />}
           />
+
+          {/* Subject */}
+          <Route path="subjects" element={<AdminSubjects />} />
+          <Route path="subjects/:subject_id" element={<AdminSubject />} />
+          <Route path="subjects/create" element={<AdminCreateSubject />} />
         </Route>
 
         {/* Dean Routes */}

@@ -1,95 +1,100 @@
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import { AxiosError } from "axios";
+import { Axios, AxiosError } from "axios";
 import { useSnackbar } from "notistack";
 import { SyntheticEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../../../core/api/axios";
 import {
-  FacultyEndpoints,
-  UsersEndpoints,
   DepartmentEndpoints,
+  UsersEndpoints,
+  SubjectEndpoints,
 } from "../../../../core/api/endpoints";
-import { IFaculty } from "../../../../core/models/IFaculty.interface";
+import { IDepartment } from "../../../../core/models/IDepartment.interface";
 import { IUser } from "../../../../core/models/IUser.interface";
-import { ICreateDepartment } from "../../models/ICreateDeparment.interface";
+import { ICreateFaculty } from "../../models/ICreateFaculty.interface";
+import { ICreateSubject } from "../../models/ICreateSubject.interface";
 
-function CreateDepartment() {
-  const { enqueueSnackbar } = useSnackbar();
+function CreateSubject() {
   const navigate = useNavigate();
-  const [hods, setHods] = useState<IUser[]>();
-  const [faculties, setFaculties] = useState<IFaculty[]>();
+  const { enqueueSnackbar } = useSnackbar();
+  const [teachers, setTeachers] = useState<IUser[]>();
+  const [departments, setDepartments] = useState<IDepartment[]>();
 
   // Form Data
-  const [hodId, setHodId] = useState<string>("");
-  const [facultyId, setFacultyId] = useState<string>("");
+  const [teacherId, setTeacherId] = useState<string>("");
+  const [departmentId, setDepartmentId] = useState<string>("");
   const [name, setName] = useState<string>("");
 
   useEffect(() => {
-    const getHod = async () =>
+    const getTeachers = async () =>
       await axios
-        .get<IUser[]>(UsersEndpoints.GetHods)
-        .then((res) => setHods(res.data))
-        .catch((err: AxiosError) => setHods([]));
-    const getFaculties = async () =>
+        .get(UsersEndpoints.GetTeachers)
+        .then((res) => setTeachers(res.data))
+        .catch((err: AxiosError) => setTeachers([]));
+    const getDepartments = async () =>
       await axios
-        .get<IFaculty[]>(FacultyEndpoints.GetAll)
-        .then((res) => setFaculties(res.data))
-        .catch((err: AxiosError) => setFaculties([]));
-    getHod();
-    getFaculties();
+        .get(DepartmentEndpoints.GetAll)
+        .then((res) => setDepartments(res.data))
+        .catch((err: AxiosError) => setDepartments([]));
+    getTeachers();
+    getDepartments();
     return () => {
-      setHods([]);
-      setFaculties([]);
+      setDepartments([]);
+      setTeachers([]);
     };
   }, []);
 
-  const defaultHodProps = {
-    options: hods,
+  const defaultTeacherProps = {
+    options: teachers,
     getOptionLabel: (option: IUser) => option.fullName,
   };
 
-  const defaultFacultyProps = {
-    options: faculties,
-    getOptionLabel: (option: IFaculty) => option.name,
+  const defaultDepartmentProps = {
+    options: departments,
+    getOptionLabel: (option: IDepartment) => option.name,
   };
 
   const Submit = async (event: SyntheticEvent) => {
     event.preventDefault();
-    if (hodId === "" || hodId == null || hodId == undefined)
-      return enqueueSnackbar("Plz select a hod", { variant: "error" });
-    else if (facultyId === "" || facultyId == null || facultyId == undefined)
-      return enqueueSnackbar("Plz select a faculty", { variant: "error" });
+    if (teacherId === "" || teacherId == null || teacherId == undefined)
+      return enqueueSnackbar("Plz select a teacher", { variant: "error" });
+    else if (
+      departmentId === "" ||
+      departmentId == null ||
+      departmentId == undefined
+    )
+      return enqueueSnackbar("Plz select a department", { variant: "error" });
     else if (name === "" || name == null || name == undefined)
       return enqueueSnackbar("Name cannot be empty", { variant: "error" });
     else if (name.length >= 20)
       return enqueueSnackbar("Name cannot be 20 characters long", {
         variant: "error",
-      }); 
-    let model: ICreateDepartment = {
-      facultyId: facultyId,
-      hodId: hodId,
+      });
+    let model: ICreateSubject = {
+      departmentId: departmentId,
       name: name,
+      teacherId: teacherId,
     };
     await axios
-      .post(DepartmentEndpoints.Create, model)
+      .post(SubjectEndpoints.Create, model)
       .then((res) => {
         if (res.data.succeeded) {
-          enqueueSnackbar("Department Created", {
+          enqueueSnackbar("Subject Created", {
             variant: "success",
           });
-          navigate("/admin/departments", { replace: true });
+          navigate("/admin/subjects", { replace: true });
         }
       })
       .catch((err: AxiosError) => {
         switch (err.response?.data.code) {
-          case "HodNotFound":
+          case "TeacherNotFound":
             enqueueSnackbar(err.response.data.error, { variant: "error" });
             break;
           case "InvalidRole":
             enqueueSnackbar(err.response.data.error, { variant: "error" });
             break;
-          case "FacultyNotFound":
+          case "DepartmentNotFound":
             enqueueSnackbar(err.response.data.error, { variant: "error" });
             break;
           case "NameFound":
@@ -99,7 +104,7 @@ function CreateDepartment() {
             enqueueSnackbar(err.response.data.error, { variant: "error" });
             break;
           default:
-            enqueueSnackbar("Something went wrong", { variant: "warning" });
+            enqueueSnackbar("Something went wrong", { variant: "error" });
             break;
         }
       });
@@ -109,7 +114,7 @@ function CreateDepartment() {
     <div className="page__wrapper">
       <div className="entry">
         <div className="entry__wrap">
-          <div className="entry__title">Create Department</div>
+          <div className="entry__title">Create Subject</div>
           <form
             className="entry__form"
             onSubmit={(event) => {
@@ -126,11 +131,11 @@ function CreateDepartment() {
                 variant="standard"
               />
               <Autocomplete
-                {...defaultHodProps}
+                {...defaultTeacherProps}
                 id="clear-on-escape"
                 clearOnEscape
                 freeSolo
-                onChange={(event, value: any) => setHodId(value?.id)}
+                onChange={(event, value: any) => setTeacherId(value?.id)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -140,15 +145,15 @@ function CreateDepartment() {
                 )}
               />
               <Autocomplete
-                {...defaultFacultyProps}
+                {...defaultDepartmentProps}
                 id="clear-on-escape"
                 clearOnEscape
                 freeSolo
-                onChange={(event, value: any) => setFacultyId(value?.id)}
+                onChange={(event, value: any) => setDepartmentId(value?.id)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Select Faculty *"
+                    label="Select Department *"
                     variant="standard"
                   />
                 )}
@@ -167,4 +172,4 @@ function CreateDepartment() {
   );
 }
 
-export default CreateDepartment;
+export default CreateSubject;

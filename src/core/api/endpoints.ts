@@ -8,6 +8,7 @@ const UsersEndpoints = {
   GetUser: "/User/GetUser/",
   GetDeans: "/User/GetUsersInRole/Dean",
   GetHods: "/User/GetUsersInRole/Hod",
+  GetTeachers: "/User/GetUsersInRole/Teacher",
 };
 
 const FacultyEndpoints = {
@@ -22,4 +23,16 @@ const DepartmentEndpoints = {
   Create: "/Department/Create/",
 };
 
-export { AuthEndpoints, UsersEndpoints, FacultyEndpoints, DepartmentEndpoints };
+const SubjectEndpoints = {
+  GetAll: "/Subject/GetAll",
+  GetById: "/Subject/GetById/",
+  Create: "/Subject/Create/",
+};
+
+export {
+  AuthEndpoints,
+  UsersEndpoints,
+  FacultyEndpoints,
+  DepartmentEndpoints,
+  SubjectEndpoints,
+};
