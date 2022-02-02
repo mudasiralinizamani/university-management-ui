@@ -15,12 +15,14 @@ const FacultyEndpoints = {
   GetAll: "/Faculty/GetAll",
   GetById: "/Faculty/GetById/",
   Create: "/Faculty/Create/",
+  UpdateDean: "/Faculty/UpdateDean",
 };
 
 const DepartmentEndpoints = {
   GetAll: "/Department/GetAll",
   GetById: "/Department/GetById/",
   Create: "/Department/Create/",
+  GetByFacultyId: "/Department/GetByFacultyId/",
 };
 
 const SubjectEndpoints = {
