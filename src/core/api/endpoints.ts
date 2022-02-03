@@ -16,6 +16,7 @@ const FacultyEndpoints = {
   GetById: "/Faculty/GetById/",
   Create: "/Faculty/Create/",
   UpdateDean: "/Faculty/UpdateDean",
+  Delete: "/Faculty/Delete/",
 };
 
 const DepartmentEndpoints = {

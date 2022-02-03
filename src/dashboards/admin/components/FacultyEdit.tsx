@@ -2,6 +2,7 @@ import { useSnackbar } from "notistack";
 import { useState, useEffect, SyntheticEvent } from "react";
 import axios from "../../../core/api/axios";
 import { FacultyEndpoints, UsersEndpoints } from "../../../core/api/endpoints";
+import { useNavigate } from "react-router-dom";
 import { IUser } from "../../../core/models/IUser.interface";
 import { AxiosError } from "axios";
 
@@ -22,6 +23,7 @@ interface properties {
 
 function FacultyEdit(props: properties) {
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   // Form Data
   const [deanId, setDeanId] = useState<string>();
@@ -29,6 +31,7 @@ function FacultyEdit(props: properties) {
   // Dialog Data
   const [deans, setDeans] = useState<IUser[]>();
   const [open, setOpen] = useState(false);
+  const [sureOpen, setSureOpen] = useState(false);
 
   useEffect(() => {
     const getDeans = async () =>
@@ -88,7 +91,32 @@ function FacultyEdit(props: properties) {
       });
   };
 
-  const onDelete = async (event: SyntheticEvent) => {};
+  const onDelete = async (event: SyntheticEvent) => {
+    await axios
+      .get(FacultyEndpoints.Delete + props.facultyId)
+      .then((res) => {
+        if (res.data?.succeeded) {
+          setSureOpen(false);
+          enqueueSnackbar("Faculty Updated", {
+            variant: "info",
+          });
+          return navigate("/admin/faculties", { replace: true });
+        }
+      })
+      .catch((err: AxiosError) => {
+        switch (err.response?.data.code) {
+          case "NotFound":
+            enqueueSnackbar(err.response.data.error, { variant: "error" });
+            break;
+          case "ServerError":
+            enqueueSnackbar(err.response.data.error, { variant: "error" });
+            break;
+          default:
+            enqueueSnackbar("Something went wrong", { variant: "warning" });
+            break;
+        }
+      });
+  };
 
   return (
     <>
@@ -112,7 +140,7 @@ function FacultyEdit(props: properties) {
                 variant="outlined"
                 color="error"
                 sx={{ marginLeft: "7px" }}
-                onClick={onDelete}
+                onClick={() => setSureOpen(true)}
               >
                 Delete
               </Button>
@@ -141,6 +169,20 @@ function FacultyEdit(props: properties) {
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
           <Button onClick={ChangeDean}>Update</Button>
+        </DialogActions>
+      </Dialog>
+      {/* Delete Faculty Modal */}
+      <Dialog open={sureOpen} onClose={() => setSureOpen(false)}>
+        <DialogTitle>Are you sure ?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            The Faculty will be deleted and Faculty will be removed from
+            departments
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setSureOpen(false)}>No</Button>
+          <Button onClick={onDelete}>Yes</Button>
         </DialogActions>
       </Dialog>
     </>
