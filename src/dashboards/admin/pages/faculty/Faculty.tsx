@@ -30,7 +30,7 @@ function Faculty() {
           setDepartments(res.data);
         })
         .catch((err: AxiosError) => {
-          setFaculty(null);
+          setDepartments([]);
         });
     getFaculty();
     getDepartments();

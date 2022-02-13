@@ -30,6 +30,7 @@ const SubjectEndpoints = {
   GetAll: "/Subject/GetAll",
   GetById: "/Subject/GetById/",
   Create: "/Subject/Create/",
+  GetByDepartmentId: "/Subject/GetByDepartmentId/",
 };
 
 export {
